@@ -1,0 +1,69 @@
+level=info msg="Skipped reading configuration file" reason="Config File \"cilium-operator\" Not Found in \"[/]\"" subsys=config
+level=warning msg="user-provided parameter had value <= 0 , which is invalid ; setting to default" defaultValue=100 parameter=policy-queue-size subsys=config
+level=warning msg="user-provided parameter had value <= 0 , which is invalid ; setting to default" defaultValue=25 parameter=endpoint-queue-size subsys=config
+level=info msg="  --aws-instance-limit-mapping='map[]'" subsys=cilium-operator
+level=info msg="  --aws-release-excess-ips='false'" subsys=cilium-operator
+level=info msg="  --azure-resource-group='MC_aks-test_aks-test_westeurope'" subsys=cilium-operator
+level=info msg="  --azure-subscription-id='fd182b79-36cb-4a4e-b567-e568d63f9f62'" subsys=cilium-operator
+level=info msg="  --ccnp-node-status-gc='true'" subsys=cilium-operator
+level=info msg="  --cilium-endpoint-gc='true'" subsys=cilium-operator
+level=info msg="  --cilium-endpoint-gc-interval='30m0s'" subsys=cilium-operator
+level=info msg="  --cluster-id='0'" subsys=cilium-operator
+level=info msg="  --cluster-name='default'" subsys=cilium-operator
+level=info msg="  --cmdref=''" subsys=cilium-operator
+level=info msg="  --cnp-node-status-gc='true'" subsys=cilium-operator
+level=info msg="  --cnp-node-status-gc-interval='2m0s'" subsys=cilium-operator
+level=info msg="  --cnp-status-update-interval='1s'" subsys=cilium-operator
+level=info msg="  --config=''" subsys=cilium-operator
+level=info msg="  --config-dir='/tmp/cilium/config-map'" subsys=cilium-operator
+level=info msg="  --debug='false'" subsys=cilium-operator
+level=info msg="  --disable-endpoint-crd='false'" subsys=cilium-operator
+level=info msg="  --enable-k8s-endpoint-slice='true'" subsys=cilium-operator
+level=info msg="  --enable-metrics='false'" subsys=cilium-operator
+level=info msg="  --eni-parallel-workers='50'" subsys=cilium-operator
+level=info msg="  --eni-tags='map[]'" subsys=cilium-operator
+level=info msg="  --identity-allocation-mode='crd'" subsys=cilium-operator
+level=info msg="  --identity-gc-interval='15m0s'" subsys=cilium-operator
+level=info msg="  --identity-heartbeat-timeout='15m0s'" subsys=cilium-operator
+level=info msg="  --ipam='azure'" subsys=cilium-operator
+level=info msg="  --k8s-api-server=''" subsys=cilium-operator
+level=info msg="  --k8s-heartbeat-timeout='30s'" subsys=cilium-operator
+level=info msg="  --k8s-kubeconfig-path=''" subsys=cilium-operator
+level=info msg="  --k8s-namespace='kube-system'" subsys=cilium-operator
+level=info msg="  --kvstore=''" subsys=cilium-operator
+level=info msg="  --kvstore-opt='map[]'" subsys=cilium-operator
+level=info msg="  --limit-ipam-api-burst='4'" subsys=cilium-operator
+level=info msg="  --limit-ipam-api-qps='20'" subsys=cilium-operator
+level=info msg="  --nodes-gc-interval='2m0s'" subsys=cilium-operator
+level=info msg="  --operator-api-serve-addr='127.0.0.1:9234'" subsys=cilium-operator
+level=info msg="  --operator-prometheus-serve-addr=':6942'" subsys=cilium-operator
+level=info msg="  --parallel-alloc-workers='50'" subsys=cilium-operator
+level=info msg="  --synchronize-k8s-nodes='true'" subsys=cilium-operator
+level=info msg="  --synchronize-k8s-services='true'" subsys=cilium-operator
+level=info msg="  --unmanaged-pod-watcher-interval='15'" subsys=cilium-operator
+level=info msg="  --update-ec2-apdater-limit-via-api='false'" subsys=cilium-operator
+level=info msg="  --version='false'" subsys=cilium-operator
+level=info msg="Cilium Operator 1.7.90 a6a8bf691 2020-04-02T17:11:09+02:00 go version go1.14.1 linux/amd64" subsys=cilium-operator
+level=info msg="Starting apiserver on address 127.0.0.1:9234" subsys=cilium-operator
+level=info msg="Establishing connection to apiserver" host="https://aks-test-aks-test-fd182b-bb64ad6a.hcp.westeurope.azmk8s.io:443" subsys=k8s
+level=info msg="Connected to apiserver" subsys=k8s
+level=info msg="Retrieved node information from kubernetes" nodeName=aks-nodepool1-10706209-vmss000003 subsys=k8s
+level=info msg="Received own node information from API server" ipAddr.ipv4=10.240.0.35 ipAddr.ipv6="<nil>" nodeName=aks-nodepool1-10706209-vmss000003 subsys=k8s v4Prefix=10.35.0.0/16 v6Prefix="<nil>"
+level=info msg="Starting Azure IP allocator..." subsys=cilium-operator
+level=info msg="Synchronized Azure IPAM information" numInstances=2 numSubnets=1 numVirtualNetworks=1 subsys=azure
+level=info msg="Starting to synchronize CiliumNode custom resources..." subsys=cilium-operator
+level=info msg="Starting to garbage collect stale CiliumEndpoint custom resources..." subsys=cilium-operator
+level=info msg="Starting to garbage collect stale CiliumNetworkPolicy status field entries..." subsys=cilium-operator
+level=info msg="Starting to garbage collect stale CiliumClusterwideNetworkPolicy status field entries..." subsys=cilium-operator
+level=info msg="Initialization complete" subsys=cilium-operator
+level=info msg="Starting CRD identity garbage collector with 15m0s interval..." subsys=cilium-operator
+level=info msg="Discovered new CiliumNode custom resource" name=aks-nodepool1-10706209-vmss000000 subsys=ipam
+level=info msg="Discovered new CiliumNode custom resource" name=aks-nodepool1-10706209-vmss000003 subsys=ipam
+level=info msg="Synchronized Azure IPAM information" numInstances=2 numSubnets=1 numVirtualNetworks=1 subsys=azure
+level=info msg="Synchronized Azure IPAM information" numInstances=2 numSubnets=1 numVirtualNetworks=1 subsys=azure
+level=info msg="Resolving IP deficit of node" available=31 availableForAllocation=225 availableInterfaces=1 instanceID=/subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourcegroups/mc_aks-test_aks-test_westeurope/providers/microsoft.compute/virtualmachinescalesets/aks-nodepool1-10706209-vmss/virtualmachines/3 maxIPsToAllocate=37 name=aks-nodepool1-10706209-vmss000003 neededIPs=37 remainingInterfaces=1 selectedInterface=/subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss selectedPoolID=/subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet subsys=ipam used=4
+level=info msg="Synchronized Azure IPAM information" numInstances=2 numSubnets=1 numVirtualNetworks=1 subsys=azure
+level=info msg="Resolving IP deficit of node" available=31 availableForAllocation=225 availableInterfaces=1 instanceID=/subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourcegroups/mc_aks-test_aks-test_westeurope/providers/microsoft.compute/virtualmachinescalesets/aks-nodepool1-10706209-vmss/virtualmachines/3 maxIPsToAllocate=37 name=aks-nodepool1-10706209-vmss000003 neededIPs=37 remainingInterfaces=1 selectedInterface=/subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss selectedPoolID=/subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet subsys=ipam used=4
+level=info msg="Synchronized Azure IPAM information" numInstances=2 numSubnets=1 numVirtualNetworks=1 subsys=azure
+level=info msg="Resolving IP deficit of node" available=31 availableForAllocation=225 availableInterfaces=1 instanceID=/subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourcegroups/mc_aks-test_aks-test_westeurope/providers/microsoft.compute/virtualmachinescalesets/aks-nodepool1-10706209-vmss/virtualmachines/3 maxIPsToAllocate=37 name=aks-nodepool1-10706209-vmss000003 neededIPs=37 remainingInterfaces=1 selectedInterface=/subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss selectedPoolID=/subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet subsys=ipam used=4
+level=info msg="Synchronized Azure IPAM information" numInstances=2 numSubnets=1 numVirtualNetworks=1 subsys=azure

@@ -1,0 +1,397 @@
+apiVersion: cilium.io/v2
+kind: CiliumNode
+metadata:
+  creationTimestamp: "2020-04-02T13:39:14Z"
+  generation: 5
+  name: aks-nodepool1-10706209-vmss000003
+  ownerReferences:
+  - apiVersion: v1
+    kind: Node
+    name: aks-nodepool1-10706209-vmss000003
+    uid: db8e1317-e907-4839-8480-9fb3da363874
+  resourceVersion: "191423"
+  selfLink: /apis/cilium.io/v2/ciliumnodes/aks-nodepool1-10706209-vmss000003
+  uid: 8f84220f-0a91-46ab-9d81-e0a2db3bd0d1
+spec:
+  addresses:
+  - ip: 10.240.0.35
+    type: InternalIP
+  - ip: 10.240.0.47
+    type: CiliumInternalIP
+  encryption: {}
+  eni: {}
+  health:
+    ipv4: 10.240.0.59
+  instance-id: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourcegroups/mc_aks-test_aks-test_westeurope/providers/microsoft.compute/virtualmachinescalesets/aks-nodepool1-10706209-vmss/virtualmachines/3
+  ipam:
+    podCIDRs:
+    - 10.35.0.0/16
+    pool:
+      10.240.0.35:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.36:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.37:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.38:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.39:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.40:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.41:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.42:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.43:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.44:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.45:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.46:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.47:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.48:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.49:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.50:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.51:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.52:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.53:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.54:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.55:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.56:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.57:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.58:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.59:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.60:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.61:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.62:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.63:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.64:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.65:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.158:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.159:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.160:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.161:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.162:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.163:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.164:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.165:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.166:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.167:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.168:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.169:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.170:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.171:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.172:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.173:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.174:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.175:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.176:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.177:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.178:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.179:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.180:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.181:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.182:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.183:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.184:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.185:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.186:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.187:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.188:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.189:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.190:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.191:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.192:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.193:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.194:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.195:
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+    pre-allocate: 64
+status:
+  azure:
+    interfaces:
+    - addresses:
+      - ip: 10.240.0.35
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.36
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.37
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.38
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.39
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.40
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.41
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.42
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.43
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.44
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.45
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.46
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.47
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.48
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.49
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.50
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.51
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.52
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.53
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.54
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.55
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.56
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.57
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.58
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.59
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.60
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.61
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.62
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.63
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.64
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.65
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.158
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.159
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.160
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.161
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.162
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.163
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.164
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.165
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.166
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.167
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.168
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.169
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.170
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.171
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.172
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.173
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.174
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.175
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.176
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.177
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.178
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.179
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.180
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.181
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.182
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.183
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.184
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.185
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.186
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.187
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.188
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.189
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.190
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.191
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.192
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.193
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.194
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      - ip: 10.240.0.195
+        state: succeeded
+        subnet: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Network/virtualNetworks/aks-vnet-10706209/subnets/aks-subnet
+      id: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      mac: 00:0D:3A:AD:99:A5
+      name: aks-nodepool1-10706209-vmss
+  eni: {}
+  ipam:
+    used:
+      10.240.0.44:
+        owner: kube-system/tunnelfront-6bbf7494dc-t5nbx [restored]
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.47:
+        owner: router
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.49:
+        owner: kube-system/coredns-698c77c5d7-tg69j [restored]
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
+      10.240.0.59:
+        owner: health
+        resource: /subscriptions/fd182b79-36cb-4a4e-b567-e568d63f9f62/resourceGroups/MC_aks-test_aks-test_westeurope/providers/Microsoft.Compute/virtualMachineScaleSets/aks-nodepool1-10706209-vmss/virtualMachines/3/networkInterfaces/aks-nodepool1-10706209-vmss
