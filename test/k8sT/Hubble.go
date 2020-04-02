@@ -131,8 +131,8 @@ var _ = Describe("K8sHubbleTest", func() {
 			defer cancel()
 
 			observe := hubbleObserve(ctx, ciliumPodK8s1, fmt.Sprintf(
-				"--follow --last 1 --json --type trace --from-pod %s/%s --to-label %s --to-namespace %s --to-port %d",
-				namespaceForTest, appPods[helpers.App2], app1Labels, app1Port, namespaceForTest))
+				"--follow --last 1 --json --type trace --from-pod %s/%s --to-namespace %s --to-label %s --to-port %d",
+				namespaceForTest, appPods[helpers.App2], namespaceForTest, app1Labels, app1Port))
 
 			res := kubectl.ExecPodCmd(namespaceForTest, appPods[helpers.App2],
 				helpers.CurlFail(fmt.Sprintf("http://%s/public", app1ClusterIP)))
@@ -152,8 +152,8 @@ var _ = Describe("K8sHubbleTest", func() {
 			ctx, cancel := context.WithTimeout(context.Background(), helpers.MidCommandTimeout)
 			defer cancel()
 			observe := hubbleObserve(ctx, ciliumPodK8s1, fmt.Sprintf(
-				"--follow --last 1 --json --type l7 --from-pod %s/%s --to-label %s --to-namespace %s --protocol http",
-				namespaceForTest, appPods[helpers.App2], app1Labels, namespaceForTest))
+				"--follow --last 1 --json --type l7 --from-pod %s/%s --to-namespace %s --to-label %s --protocol http",
+				namespaceForTest, appPods[helpers.App2], namespaceForTest, app1Labels))
 
 			res = kubectl.ExecPodCmd(namespaceForTest, appPods[helpers.App2],
 				helpers.CurlFail(fmt.Sprintf("http://%s/public", app1ClusterIP)))
