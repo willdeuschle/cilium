@@ -40,6 +40,7 @@ import (
 	"github.com/cilium/cilium/pkg/version"
 
 	"github.com/prometheus/client_golang/prometheus"
+	"github.com/shirou/gopsutil/mem"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
@@ -523,6 +524,10 @@ const (
 	// NATMapEntriesGlobalDefault holds the default size of the NAT map
 	// and is 2/3 of the full CT size as a heuristic
 	NATMapEntriesGlobalDefault = int((CTMapEntriesGlobalTCPDefault + CTMapEntriesGlobalAnyDefault) * 2 / 3)
+
+	// MapEntriesGlobalDynamicSizeName is the name of the option to enable
+	// dynamic BPF map sizing based on available system memory.
+	MapEntriesGlobalDynamicSizeName = "bpf-map-dynamic-size"
 
 	// LimitTableMin defines the minimum CT or NAT table limit
 	LimitTableMin = 1 << 10 // 1Ki entries
@@ -1998,9 +2003,6 @@ func (c *DaemonConfig) Populate() {
 	c.AzureSubscriptionID = viper.GetString(AzureSubscriptionID)
 	c.AzureResourceGroup = viper.GetString(AzureResourceGroup)
 	c.BPFCompilationDebug = viper.GetBool(BPFCompileDebugName)
-	c.CTMapEntriesGlobalTCP = viper.GetInt(CTMapEntriesGlobalTCPName)
-	c.CTMapEntriesGlobalAny = viper.GetInt(CTMapEntriesGlobalAnyName)
-	c.NATMapEntriesGlobal = viper.GetInt(NATMapEntriesGlobalName)
 	c.BPFRoot = viper.GetString(BPFRoot)
 	c.CertDirectory = viper.GetString(CertsDirectory)
 	c.CGroupRoot = viper.GetString(CGroupRoot)
@@ -2106,7 +2108,6 @@ func (c *DaemonConfig) Populate() {
 	c.NodesGCInterval = viper.GetDuration(NodesGCInterval)
 	c.FlannelMasterDevice = viper.GetString(FlannelMasterDevice)
 	c.FlannelUninstallOnExit = viper.GetBool(FlannelUninstallOnExit)
-	c.PolicyMapMaxEntries = viper.GetInt(PolicyMapEntriesName)
 	c.PProf = viper.GetBool(PProf)
 	c.PreAllocateMaps = viper.GetBool(PreAllocateMapsName)
 	c.PrependIptablesChains = viper.GetBool(PrependIptablesChainsName)
@@ -2141,6 +2142,90 @@ func (c *DaemonConfig) Populate() {
 
 	if nativeCIDR := viper.GetString(IPv4NativeRoutingCIDR); nativeCIDR != "" {
 		c.ipv4NativeRoutingCIDR = cidr.MustParseCIDR(nativeCIDR)
+	}
+
+	// BPF map size options
+	// Any map size explicitly set via option will override the dynamic
+	// sizing.
+	c.CTMapEntriesGlobalTCP = viper.GetInt(CTMapEntriesGlobalTCPName)
+	c.CTMapEntriesGlobalAny = viper.GetInt(CTMapEntriesGlobalAnyName)
+	c.NATMapEntriesGlobal = viper.GetInt(NATMapEntriesGlobalName)
+	c.PolicyMapMaxEntries = viper.GetInt(PolicyMapEntriesName)
+
+	if viper.GetBool(MapEntriesGlobalDynamicSizeName) {
+		vms, err := mem.VirtualMemory()
+		if err != nil || vms == nil {
+			log.WithError(err).Fatal("Failed to get system memory")
+		}
+		log.Debugf("memory: %v total", vms.Total)
+
+		// Heuristic: use 1% of total memory for maps.
+		// Distribute relative to map default entries among the
+		// different maps. Cap each map size by the maximum. Map size
+		// provided by the user will override the calculated value and
+		// also the max. There will be check for maximum size later on
+		// in DaemonConfig.Validate()
+		memoryAvailableForMaps := int(vms.Total / 100)
+		totalMapsDefault := CTMapEntriesGlobalTCPDefault +
+			CTMapEntriesGlobalAnyDefault +
+			NATMapEntriesGlobalDefault +
+			defaults.PolicyMapEntries
+		// For the heuristic it's enough to assume an average entry size. That
+		// way we don't have to pull in additional dependencies from
+		// pkg/maps/* to get exact entry sizes.
+		// ctmap (tcp + any): 38/14 + 56
+		// nat: 38/14 + 40/56
+		// policymap: 8 + 24
+		estimatedEntrySize := 64
+		entriesAvailableForMaps := memoryAvailableForMaps / estimatedEntrySize
+		log.Debugf("Total memory available for map entries: %v", memoryAvailableForMaps)
+		log.Debugf("Total map entries: %v", totalMapsDefault)
+		log.Debugf("Available map entries: %v", entriesAvailableForMaps)
+
+		clampToTableLimits := func(mapEntries int) int {
+			if mapEntries < LimitTableMin {
+				mapEntries = LimitTableMin
+			} else if mapEntries > LimitTableMax {
+				mapEntries = LimitTableMax
+			}
+			return mapEntries
+		}
+
+		// If value for a particular map was explicitly set by an
+		// option, disable dynamic sizing for this map and use the
+		// provided size.
+		if !viper.IsSet(CTMapEntriesGlobalTCPName) {
+			c.CTMapEntriesGlobalTCP =
+				clampToTableLimits((entriesAvailableForMaps * CTMapEntriesGlobalTCPDefault) / totalMapsDefault)
+			log.Debugf("option %s not set by user, set by dynamic sizing to %v (default %v)",
+				CTMapEntriesGlobalTCPName, c.CTMapEntriesGlobalTCP, CTMapEntriesGlobalTCPDefault)
+		} else {
+			log.Debugf("option %s set by user to %v", CTMapEntriesGlobalTCPName, c.CTMapEntriesGlobalTCP)
+		}
+		if !viper.IsSet(CTMapEntriesGlobalAnyName) {
+			c.CTMapEntriesGlobalAny =
+				clampToTableLimits((entriesAvailableForMaps * CTMapEntriesGlobalAnyDefault) / totalMapsDefault)
+			log.Debugf("option %s not set by user, set by dynamic sizing to %v (default %v)",
+				CTMapEntriesGlobalAnyName, c.CTMapEntriesGlobalAny, CTMapEntriesGlobalAnyDefault)
+		} else {
+			log.Debugf("option %s set by user to %v", CTMapEntriesGlobalAnyName, c.CTMapEntriesGlobalAny)
+		}
+		if !viper.IsSet(NATMapEntriesGlobalName) {
+			c.NATMapEntriesGlobal =
+				clampToTableLimits((entriesAvailableForMaps * NATMapEntriesGlobalDefault) / totalMapsDefault)
+			log.Debugf("option %s not set by user, set by dynamic sizing to %v (default %v)",
+				NATMapEntriesGlobalName, c.NATMapEntriesGlobal, NATMapEntriesGlobalDefault)
+		} else {
+			log.Debugf("option %s set by user to %v", NATMapEntriesGlobalName, c.NATMapEntriesGlobal)
+		}
+		if !viper.IsSet(PolicyMapEntriesName) {
+			c.PolicyMapMaxEntries =
+				clampToTableLimits((entriesAvailableForMaps * defaults.PolicyMapEntries) / totalMapsDefault)
+			log.Debugf("option %s not set by user, set by dynamic sizing to %v (default %v)",
+				PolicyMapEntriesName, c.PolicyMapMaxEntries, defaults.PolicyMapEntries)
+		} else {
+			log.Debugf("option %s set by user to %v", PolicyMapEntriesName, c.PolicyMapMaxEntries)
+		}
 	}
 
 	// toFQDNs options

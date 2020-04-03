@@ -86,6 +86,9 @@ data:
   # table.
   bpf-nat-global-max: "524288"
 
+  # Enable/disable dynamic sizing of BPF maps based on available system memory
+  bpf-map-dynamic-size: "false"
+
   # Pre-allocation of map entries allows per-packet latency to be reduced, at
   # the expense of up-front memory allocation for the entries in the maps. The
   # default value below will minimize memory usage in the default installation;
