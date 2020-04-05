@@ -89,7 +89,7 @@ func (i *IngressRule) sanitize() error {
 	}
 	l3DependentL4Support := map[interface{}]bool{
 		"FromEndpoints": true,
-		"FromCIDR":      false,
+		"FromCIDR":      true,
 		"FromCIDRSet":   false,
 		"FromEntities":  true,
 	}

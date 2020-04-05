@@ -155,6 +155,31 @@ func (s *PolicyAPITestSuite) TestIsLabelBasedIngress(c *C) {
 				}
 			},
 		},
+		{
+			name: "rule-with-l3-and-l4",
+			setupArgs: func() args {
+				return args{
+					&IngressRule{
+						FromCIDR: CIDRSlice{"192.0.0.0/3"},
+						ToPorts: []PortRule{
+							{
+								Ports: []PortProtocol{
+									{
+										Port:     "80",
+										Protocol: ProtoTCP,
+									},
+								},
+							},
+						},
+					},
+				}
+			},
+			setupWanted: func() wanted {
+				return wanted{
+					isLabelBased: true,
+				}
+			},
+		},
 	}
 
 	for _, tt := range tests {
