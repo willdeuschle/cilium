@@ -97,7 +97,9 @@ var _ = Describe("RuntimePolicies", func() {
 
 	JustAfterEach(func() {
 		vm.ValidateNoErrorsInLogs(CurrentGinkgoTestDescription().Duration)
-		Expect(monitorStop()).To(BeNil(), "cannot stop monitor command")
+		err := monitorStop()
+		Expect(false).To(BeTrue(), "just for insight", err)
+		Expect(err).To(BeNil(), "cannot stop monitor command", err)
 	})
 
 	AfterFailed(func() {
@@ -1160,6 +1162,99 @@ var _ = Describe("RuntimePolicies", func() {
 		curlWithRetry(helpers.App2, "-4 http://%s", worldIP).ExpectSuccess("%q cannot make http request to pod", helpers.App2)
 
 		vm.PolicyDelAll().ExpectSuccess("Unable to delete all policies")
+	})
+
+	Context("TestsIngressFromHost", func() {
+		hostDockerContainer := "hostDockerContainer"
+		hostIP := "10.0.2.15"
+		otherHostIP := ""
+		httpd1Address := ""
+
+		BeforeAll(func() {
+			By("Starting netperf image using host networking")
+			res := vm.ContainerCreate(hostDockerContainer, constants.NetperfImage, helpers.HostDockerNetwork, "-l id.hostDockerContainer")
+			res.ExpectSuccess("unable to start Docker container with host networking")
+
+			By("Detecting host IP in world CIDR")
+
+			// docker network inspect bridge | jq -r '.[0]."IPAM"."Config"[0]."Gateway"'
+			res = vm.NetworkGet("bridge")
+			res.ExpectSuccess("No docker bridge available for testing ingress CIDR within host")
+			filter := fmt.Sprintf(`{ [0].IPAM.Config[0].Gateway }`)
+			obj, err := res.FindResults(filter)
+			Expect(err).NotTo(HaveOccurred(), "Error occurred while finding docker bridge IP")
+			Expect(obj).To(HaveLen(1), "Unexpectedly found more than one IPAM config element for docker bridge")
+			otherHostIP = obj[0].Interface().(string)
+			Expect(otherHostIP).To(Equal(helpers.DockerBridgeIP), "Please adjust value of DockerBridgeIP")
+			By("Using %q for world CIDR IP", otherHostIP)
+		})
+
+		AfterAll(func() {
+			vm.ContainerRm(hostDockerContainer)
+		})
+
+		BeforeEach(func() {
+			By("Pinging %q from %q before importing policy (should work)", helpers.Httpd1, hostIP)
+			httpd1DockerNetworking, err := vm.ContainerInspectNet(helpers.Httpd1)
+			Expect(err).Should(BeNil(), fmt.Sprintf(
+				"could not get container %s Docker networking", helpers.Httpd1))
+
+			httpd1Address = httpd1DockerNetworking[helpers.IPv4]
+			failedPing := vm.ContainerExec(hostDockerContainer, helpers.Ping(httpd1Address))
+			failedPing.ExpectSuccess("unable able to ping %q at IP %q", helpers.Httpd1, httpd1Address)
+
+			By("Pinging %q from %q before importing policy (should work)", helpers.Httpd1, otherHostIP)
+			failedPing = vm.ContainerExec(hostDockerContainer, fmt.Sprintf("ping -W 2 -c %d -I %s %s", helpers.PingCount, otherHostIP, httpd1Address))
+			failedPing.ExpectSuccess("unable able to ping %q at IP %q", helpers.Httpd1, httpd1Address)
+
+			// Flush global conntrack table to be safe because egress conntrack cleanup
+			// is still to be completed (GH-3393).
+			By("Flushing global connection tracking table before importing policy")
+			vm.FlushGlobalConntrackTable().ExpectSuccess("Unable to flush global conntrack table")
+		})
+
+		AfterEach(func() {
+			vm.PolicyDelAll().ExpectSuccess("Failed to clear policy after ingress test")
+		})
+
+		It("Tests Ingress From Host", func() {
+			By("Importing policy which allows ingress from %q entity from %q", helpers.Httpd1, api.EntityHost)
+			policy := fmt.Sprintf(`
+			[{
+				"endpointSelector": {"matchLabels":{"id.%s":""}},
+				"ingress": [{
+					"fromEntities": [
+						"%s"
+					]
+				}]
+			}]`, helpers.Httpd1, api.EntityHost)
+
+			_, err := vm.PolicyRenderAndImport(policy)
+			Expect(err).To(BeNil(), "Unable to import policy: %s", err)
+
+			By("Pinging %s from %s (should work)", helpers.Httpd1, api.EntityHost)
+			successPing := vm.ContainerExec(hostDockerContainer, helpers.Ping(httpd1Address))
+			successPing.ExpectSuccess("not able to ping %s", httpd1Address)
+
+			By("Accessing /public on %s from Docker container with host networking (should work)", helpers.Httpd1)
+			successCurl := vm.ContainerExec(hostDockerContainer, helpers.CurlFail("http://%s/public", httpd1Address))
+			successCurl.ExpectSuccess("Expected to be able to access /public %s", helpers.Httpd1)
+
+			By("Pinging %s from %s (shouldn't work)", helpers.Httpd2, hostDockerContainer)
+			failPing := vm.ContainerExec(hostDockerContainer, helpers.Ping(helpers.Httpd2))
+			failPing.ExpectFail("not able to ping %s", helpers.Httpd2)
+
+			httpd2, err := vm.ContainerInspectNet(helpers.Httpd2)
+			Expect(err).Should(BeNil(), "Unable to get networking information for container %q", helpers.Httpd2)
+
+			By("Accessing /public in %q from %q (shouldn't work)", helpers.Httpd2, hostDockerContainer)
+			failCurl := vm.ContainerExec(helpers.Httpd2, helpers.CurlFail("http://%s/public", httpd2[helpers.IPv4]))
+			failCurl.ExpectFail("unexpectedly able to access %s when access should only be allowed to %s from host", helpers.Httpd2, helpers.Httpd1)
+		})
+
+		It("Tests Ingress from womping", func() {
+			// TODO
+		})
 	})
 
 	Context("TestsEgressToHost", func() {
