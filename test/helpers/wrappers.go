@@ -73,6 +73,22 @@ func CurlFail(endpoint string, optionalValues ...interface{}) string {
 		CurlConnectTimeout, CurlMaxTimeout, endpoint, statsInfo)
 }
 
+// CurlFailWithSource returns the string representing the curl command with `-s` and
+// `--fail` options enabled to curl the specified endpoint.  It takes a
+// variadic optinalValues argument. This is passed on to fmt.Sprintf() and uses
+// into the curl message
+func CurlFailWithSource(source, endpoint string, optionalValues ...interface{}) string {
+	statsInfo := `time-> DNS: '%{time_namelookup}(%{remote_ip})', Connect: '%{time_connect}',` +
+		`Transfer '%{time_starttransfer}', total '%{time_total}'`
+
+	if len(optionalValues) > 0 {
+		endpoint = fmt.Sprintf(endpoint, optionalValues...)
+	}
+	return fmt.Sprintf(
+		`curl --interface %[1]s --path-as-is -s -D /dev/stderr --fail --connect-timeout %[2]d --max-time %[3]d %[4]s -w "%[5]s"`,
+		source, CurlConnectTimeout, CurlMaxTimeout, endpoint, statsInfo)
+}
+
 // CurlWithHTTPCode retunrs the string representation of the curl command which
 // only outputs the HTTP code returned by its execution against the specified
 // endpoint. It takes a variadic optinalValues argument. This is passed on to
