@@ -77,6 +77,38 @@ func (s *SSHMeta) ContainerInspect(name string) *CmdRes {
 	return s.ExecWithSudo(fmt.Sprintf("docker inspect %s", name))
 }
 
+func (s *SSHMeta) ContainerInspectCustomNet(name, net string) (map[string]string, error) {
+	res := s.ContainerInspect(name)
+	properties := map[string]string{
+		"EndpointID":        "EndpointID",
+		"GlobalIPv6Address": IPv6,
+		"IPAddress":         IPv4,
+		"NetworkID":         "NetworkID",
+		"IPv6Gateway":       "IPv6Gateway",
+	}
+
+	if !res.WasSuccessful() {
+		return nil, fmt.Errorf("could not inspect container %s", name)
+	}
+	filter := fmt.Sprintf(`{ [0].NetworkSettings.Networks.%s }`, net)
+	result := map[string]string{
+		Name: name,
+	}
+	data, err := res.FindResults(filter)
+	if err != nil {
+		return nil, err
+	}
+	for _, val := range data {
+		iface := val.Interface()
+		for k, v := range iface.(map[string]interface{}) {
+			if key, ok := properties[k]; ok {
+				result[key] = fmt.Sprintf("%s", v)
+			}
+		}
+	}
+	return result, nil
+}
+
 // ContainerInspectNet returns a map of Docker networking information fields and
 // their associated values for the container of the provided name. An error
 // is returned if the networking information could not be retrieved.

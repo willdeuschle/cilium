@@ -1248,7 +1248,7 @@ var _ = Describe("RuntimePolicies", func() {
 			res.ExpectSuccess("unable to start Docker container")
 
 			By("Detecting world IP in docker container")
-			worldDockerNetworking, err := vm.ContainerInspectNet(dockerContainer)
+			worldDockerNetworking, err := vm.ContainerInspectCustomNet(dockerContainer, "world")
 			Expect(err).Should(BeNil(), fmt.Sprintf(
 				"could not get container %s Docker networking", dockerContainer))
 			dockerContainerWorldAddress = worldDockerNetworking[helpers.IPv4]
@@ -1269,7 +1269,7 @@ var _ = Describe("RuntimePolicies", func() {
 		})
 
 		It("Tests Ingress From World", func() {
-			By("Importing policy which allows ingress from %q entity from %q", helpers.Httpd1, dockerContainer)
+			By("Importing policy which allows ingress to %q from %q", helpers.Httpd1, dockerContainer)
 			policy := fmt.Sprintf(`
 			[{
 				"endpointSelector": {"matchLabels":{"id.%s":""}},
@@ -1278,7 +1278,15 @@ var _ = Describe("RuntimePolicies", func() {
 						"%s"
 					]
 				}]
-			}]`, helpers.Httpd1, dockerContainerWorldAddress)
+			},
+			{
+				"endpointSelector": {"matchLabels":{"id.%s":""}},
+				"ingress": [{
+					"fromEntity": [
+						"%s"
+					]
+				}]
+			}]`, helpers.Httpd1, dockerContainerWorldAddress, helpers.Httpd2, helpers.Host)
 
 			_, err := vm.PolicyRenderAndImport(policy)
 			Expect(err).To(BeNil(), "Unable to import policy: %s", err)
@@ -1298,60 +1306,63 @@ var _ = Describe("RuntimePolicies", func() {
 			httpd2, err := vm.ContainerInspectNet(helpers.Httpd2)
 			Expect(err).Should(BeNil(), "Unable to get networking information for container %q", helpers.Httpd2)
 
+			// TODO: test
 			By("Accessing /public in %q from %q (shouldn't work)", helpers.Httpd2, dockerContainer)
-			failCurl := vm.ContainerExec(helpers.Httpd2, helpers.CurlFail("http://%s/public", httpd2[helpers.IPv4]))
+			failCurl := vm.ContainerExec(dockerContainer, helpers.CurlFail("http://%s/public", httpd2[helpers.IPv4]))
 			failCurl.ExpectFail("unexpectedly able to access %s when access should only be allowed to %s", helpers.Httpd2, helpers.Httpd1)
 		})
 
-		// TODO
-		// unfortunately, I don't think this is actually going to work. there is no way to spoof the docker bridge IP as
-		// the source of an incoming request, which means that there's no way to identity the incoming traffic as "world" thus relying on CIDR
-		//It("Tests ingress with CIDR+L4 policy", func() {
-		//	By("Importing policy which allows egress to %q from %q", helpers.Httpd1, otherHostIP)
-		//	policy := fmt.Sprintf(`
-		//	[{
-		//		"endpointSelector": {"matchLabels":{"id.%s":""}},
-		//		"ingress": [{
-		//			"fromCIDR": [
-		//				"%s"
-		//			],
-		//			"toPorts": [
-		//				{"ports":[{"port": "80", "protocol": "TCP"}]}
-		//			]
-		//		}]
-		//	}]`, helpers.Httpd1, otherHostIP)
-		//
-		//	_, err := vm.PolicyRenderAndImport(policy)
-		//	ExpectWithOffset(1, err).To(BeNil(), "Unable to import policy")
-		//
-		//	By("Pinging %q from %q (should not work)", helpers.Httpd1, api.EntityHost)
-		//	res := vm.ContainerExec(dockerContainer, helpers.Ping(httpd1Address))
-		//	ExpectWithOffset(1, res).ShouldNot(helpers.CMDSuccess(),
-		//		"expected ping to %q to fail", httpd1Address)
-		//
-		//	// TODO
-		//	// Docker container running with host networking can issue requests from the host IP address or the
-		//	// bridge IP address. Requests from the bridge IP address should succeed.
-		//	By("Accessing index.html at %q from Docker container using the bridge IP %q (should work)", helpers.Httpd1, otherHostIP)
-		//	res = vm.ContainerExec(dockerContainer, helpers.CurlFailWithSource(otherHostIP, "%s://%s/index.html", "http", httpd1Address))
-		//	ExpectWithOffset(1, res).To(helpers.CMDSuccess(),
-		//		"Expected to be able to access /public in %q", helpers.Httpd1)
-		//
-		//	By("Accessing %q on wrong port from Docker container using the bridge IP %1 should fail", helpers.Httpd1, otherHostIP)
-		//	res = vm.ContainerExec(dockerContainer, helpers.CurlFailWithSource(otherHostIP, "http://%s:8080/public", httpd1Address))
-		//	ExpectWithOffset(1, res).ShouldNot(helpers.CMDSuccess(),
-		//		"unexpectedly able to access %q when access should only be allowed to CIDR", httpd1Address)
-		//
-		//	httpd2DockerNetworking, err := vm.ContainerInspectNet(helpers.Httpd2)
-		//	Expect(err).Should(BeNil(), fmt.Sprintf(
-		//		"could not get container %s Docker networking", helpers.Httpd2))
-		//
-		//	httpd2Address := httpd2DockerNetworking[helpers.IPv4]
-		//	By("Accessing port 80 on wrong destination from Docker container using the bridge IP %q should fail", otherHostIP)
-		//	res = vm.ContainerExec(dockerContainer, helpers.CurlFailWithSource(otherHostIP, "%s://%s/public", "http", httpd2Address))
-		//	ExpectWithOffset(1, res).ShouldNot(helpers.CMDSuccess(),
-		//		"unexpectedly able to access %q when access should only be allowed to CIDR", httpd2Address)
-		//})
+		It("Tests Ingress From World with CIDR+L4 policy", func() {
+			By("Importing policy which allows egress to %q from %q", helpers.Httpd1, dockerContainer)
+			policy := fmt.Sprintf(`
+			[{
+				"endpointSelector": {"matchLabels":{"id.%s":""}},
+				"ingress": [{
+					"fromCIDR": [
+						"%s"
+					],
+					"toPorts": [
+						{"ports":[{"port": "80", "protocol": "TCP"}]}
+					]
+				}]
+			},
+			{
+				"endpointSelector": {"matchLabels":{"id.%s":""}},
+				"ingress": [{
+					"fromEntity": [
+						"%s"
+					]
+				}]
+			}]`, helpers.Httpd1, dockerContainerWorldAddress, helpers.Httpd2, helpers.Host)
+
+			_, err := vm.PolicyRenderAndImport(policy)
+			ExpectWithOffset(1, err).To(BeNil(), "Unable to import policy")
+
+			By("Pinging %q from %q (should not work)", helpers.Httpd1, dockerContainer)
+			res := vm.ContainerExec(dockerContainer, helpers.Ping(httpd1Address))
+			ExpectWithOffset(1, res).ShouldNot(helpers.CMDSuccess(),
+				"expected ping to %q to fail", httpd1Address)
+
+			By("Accessing index.html at %q from %q (should work)", helpers.Httpd1, dockerContainer)
+			res = vm.ContainerExec(dockerContainer, helpers.CurlFail("http://%s/index.html", httpd1Address))
+			ExpectWithOffset(1, res).To(helpers.CMDSuccess(),
+				"Expected to be able to access /public in %q", helpers.Httpd1)
+
+			By("Accessing %q on wrong port from %q (should fail)", helpers.Httpd1, dockerContainer)
+			res = vm.ContainerExec(dockerContainer, helpers.CurlFail("http://%s:8080/public", httpd1Address))
+			ExpectWithOffset(1, res).ShouldNot(helpers.CMDSuccess(),
+				"unexpectedly able to access %q when access should only be allowed to CIDR", httpd1Address)
+
+			httpd2DockerNetworking, err := vm.ContainerInspectNet(helpers.Httpd2)
+			Expect(err).Should(BeNil(), fmt.Sprintf(
+				"could not get container %s Docker networking", helpers.Httpd2))
+
+			httpd2Address := httpd2DockerNetworking[helpers.IPv4]
+			By("Accessing port 80 on wrong destination from %q (should fail)", dockerContainer)
+			res = vm.ContainerExec(dockerContainer, helpers.CurlFail("http://%s/public", httpd2Address))
+			ExpectWithOffset(1, res).ShouldNot(helpers.CMDSuccess(),
+				"unexpectedly able to access %q when access should only be allowed to CIDR", httpd2Address)
+		})
 	})
 
 	Context("TestsEgressToHost", func() {
