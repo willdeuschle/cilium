@@ -1260,6 +1260,7 @@ var _ = Describe("RuntimePolicies", func() {
 
 		AfterAll(func() {
 			vm.ContainerRm(worldDockerContainer)
+			vm.NetworkDelete("world")
 		})
 
 		BeforeEach(func() {
