@@ -1163,29 +1163,28 @@ var _ = Describe("RuntimePolicies", func() {
 	})
 
 	Context("TestsIngressFromHost", func() {
-		dockerContainer := "dockerContainer"
-		hostIP := "10.0.2.15"
+		hostDockerContainer := "hostDockerContainer"
 		httpd1Address := ""
 
 		BeforeAll(func() {
-			By("Starting netperf image using host networking")
-			res := vm.ContainerCreate(dockerContainer, constants.NetperfImage, helpers.HostDockerNetwork, "-l id.dockerContainer")
-			res.ExpectSuccess("unable to start Docker container with host networking")
+			By("Starting host networked netperf image")
+			res := vm.ContainerCreate(hostDockerContainer, constants.NetperfImage, helpers.HostDockerNetwork, "-l id.hostDockerContainer")
+			res.ExpectSuccess("Unable to start host networked Docker container")
 		})
 
 		AfterAll(func() {
-			vm.ContainerRm(dockerContainer)
+			vm.ContainerRm(hostDockerContainer)
 		})
 
 		BeforeEach(func() {
-			By("Pinging %q from %q before importing policy (should work)", helpers.Httpd1, hostIP)
+			By("Pinging %s from %s before importing policy (should work)", helpers.Httpd1, hostDockerContainer)
 			httpd1DockerNetworking, err := vm.ContainerInspectNet(helpers.Httpd1)
 			Expect(err).Should(BeNil(), fmt.Sprintf(
-				"could not get container %s Docker networking", helpers.Httpd1))
+				"Could not get container %s Docker networking", helpers.Httpd1))
 
 			httpd1Address = httpd1DockerNetworking[helpers.IPv4]
-			failedPing := vm.ContainerExec(dockerContainer, helpers.Ping(httpd1Address))
-			failedPing.ExpectSuccess("unable able to ping %q at IP %q", helpers.Httpd1, httpd1Address)
+			successPing := vm.ContainerExec(hostDockerContainer, helpers.Ping(httpd1Address))
+			successPing.ExpectSuccess("Unable able to ping %s at IP %s from %s", helpers.Httpd1, httpd1Address, hostDockerContainer)
 		})
 
 		AfterEach(func() {
@@ -1193,7 +1192,7 @@ var _ = Describe("RuntimePolicies", func() {
 		})
 
 		It("Tests Ingress From Host", func() {
-			By("Importing policy which allows ingress from %q entity from %q", helpers.Httpd1, api.EntityHost)
+			By("Importing policy which allows ingress to %s entity from %s", helpers.Httpd1, api.EntityHost)
 			policy := fmt.Sprintf(`
 			[{
 				"endpointSelector": {"matchLabels":{"id.%s":""}},
@@ -1207,61 +1206,66 @@ var _ = Describe("RuntimePolicies", func() {
 			_, err := vm.PolicyRenderAndImport(policy)
 			Expect(err).To(BeNil(), "Unable to import policy: %s", err)
 
-			By("Pinging %s from %s (should work)", helpers.Httpd1, api.EntityHost)
-			successPing := vm.ContainerExec(dockerContainer, helpers.Ping(httpd1Address))
-			successPing.ExpectSuccess("not able to ping %s", httpd1Address)
+			By("Pinging %s from %s (should work)", helpers.Httpd1, hostDockerContainer)
+			successPing := vm.ContainerExec(hostDockerContainer, helpers.Ping(httpd1Address))
+			successPing.ExpectSuccess("Not able to ping %s", httpd1Address)
 
-			By("Accessing /public on %s from Docker container with host networking (should work)", helpers.Httpd1)
-			successCurl := vm.ContainerExec(dockerContainer, helpers.CurlFail("http://%s/public", httpd1Address))
-			successCurl.ExpectSuccess("Expected to be able to access /public %s", helpers.Httpd1)
+			By("Accessing /public on %s from %s (should work)", helpers.Httpd1, hostDockerContainer)
+			successCurl := vm.ContainerExec(hostDockerContainer, helpers.CurlFail("http://%s/public", httpd1Address))
+			successCurl.ExpectSuccess("Expected to be able to access /public on %s from %s", helpers.Httpd1, hostDockerContainer)
 
-			By("Pinging %s from %s (shouldn't work)", helpers.Httpd2, dockerContainer)
-			failPing := vm.ContainerExec(dockerContainer, helpers.Ping(helpers.Httpd2))
-			failPing.ExpectFail("not able to ping %s", helpers.Httpd2)
+			By("Pinging %s from %s (shouldn't work)", helpers.Httpd2, hostDockerContainer)
+			failPing := vm.ContainerExec(hostDockerContainer, helpers.Ping(helpers.Httpd2))
+			failPing.ExpectFail("Not able to ping %s", helpers.Httpd2)
 
 			httpd2, err := vm.ContainerInspectNet(helpers.Httpd2)
-			Expect(err).Should(BeNil(), "Unable to get networking information for container %q", helpers.Httpd2)
+			Expect(err).Should(BeNil(), "Unable to get networking information for container %s", helpers.Httpd2)
 
-			By("Accessing /public in %q from %q (shouldn't work)", helpers.Httpd2, dockerContainer)
+			By("Accessing /public on %s from %s (shouldn't work)", helpers.Httpd2, hostDockerContainer)
 			failCurl := vm.ContainerExec(helpers.Httpd2, helpers.CurlFail("http://%s/public", httpd2[helpers.IPv4]))
-			failCurl.ExpectFail("unexpectedly able to access %s when access should only be allowed to %s from host", helpers.Httpd2, helpers.Httpd1)
+			failCurl.ExpectFail("Unexpectedly able to access %s when access should only be allowed to %s from host", helpers.Httpd2, helpers.Httpd1)
 		})
 	})
 
 	Context("TestsIngressFromWorld", func() {
-		dockerContainer := "dockerContainer"
+		worldDockerContainer := "worldDockerContainer"
 		dockerContainerWorldAddress := ""
 		httpd1Address := ""
+		httpd2Address := ""
 
 		BeforeAll(func() {
 			By("Detecting local IP in %s", helpers.Httpd1)
 			httpd1DockerNetworking, err := vm.ContainerInspectNet(helpers.Httpd1)
-			Expect(err).Should(BeNil(), fmt.Sprintf(
-				"could not get container %s Docker networking", helpers.Httpd1))
+			Expect(err).Should(BeNil(), "Unable to get networking information for container %s", helpers.Httpd1)
 			httpd1Address = httpd1DockerNetworking[helpers.IPv4]
+
+			By("Detecting local IP in %s", helpers.Httpd2)
+			httpd2DockerNetworking, err := vm.ContainerInspectNet(helpers.Httpd2)
+			Expect(err).Should(BeNil(), "Unable to get networking information for container %s", helpers.Httpd2)
+			httpd2Address = httpd2DockerNetworking[helpers.IPv4]
 
 			By("Creating a docker network without masquerading to act as world entity")
 			vm.ExecWithSudo("docker network create -o com.docker.network.bridge.enable_ip_masquerade=false world")
 
 			By("Starting netperf image using world network")
-			res := vm.ContainerCreate(dockerContainer, constants.NetperfImage, "world", "-l id.dockerContainer")
-			res.ExpectSuccess("unable to start Docker container")
+			res := vm.ContainerCreate(worldDockerContainer, constants.NetperfImage, "world", "-l id.worldDockerContainer")
+			res.ExpectSuccess("Unable to start Docker container")
 
 			By("Detecting world IP in docker container")
-			worldDockerNetworking, err := vm.ContainerInspectCustomNet(dockerContainer, "world")
+			worldDockerNetworking, err := vm.ContainerInspectCustomNet(worldDockerContainer, "world")
 			Expect(err).Should(BeNil(), fmt.Sprintf(
-				"could not get container %s Docker networking", dockerContainer))
+				"Could not get container %s Docker networking", worldDockerContainer))
 			dockerContainerWorldAddress = worldDockerNetworking[helpers.IPv4]
 		})
 
 		AfterAll(func() {
-			vm.ContainerRm(dockerContainer)
+			vm.ContainerRm(worldDockerContainer)
 		})
 
 		BeforeEach(func() {
-			By("Pinging %q from %q before importing policy (should work)", helpers.Httpd1, dockerContainer)
-			failedPing := vm.ContainerExec(dockerContainer, helpers.Ping(httpd1Address))
-			failedPing.ExpectSuccess("unable able to ping %q at IP %q", helpers.Httpd1, httpd1Address)
+			By("Pinging %s from %s before importing policy (should work)", helpers.Httpd1, worldDockerContainer)
+			successPing := vm.ContainerExec(worldDockerContainer, helpers.Ping(httpd1Address))
+			successPing.ExpectSuccess("Unable able to ping %s from %s", helpers.Httpd1, worldDockerContainer)
 		})
 
 		AfterEach(func() {
@@ -1269,7 +1273,7 @@ var _ = Describe("RuntimePolicies", func() {
 		})
 
 		It("Tests Ingress From World", func() {
-			By("Importing policy which allows ingress to %q from %q", helpers.Httpd1, dockerContainer)
+			By("Importing policy which allows ingress to %s from %s", helpers.Httpd1, worldDockerContainer)
 			policy := fmt.Sprintf(`
 			[{
 				"endpointSelector": {"matchLabels":{"id.%s":""}},
@@ -1291,29 +1295,25 @@ var _ = Describe("RuntimePolicies", func() {
 			_, err := vm.PolicyRenderAndImport(policy)
 			Expect(err).To(BeNil(), "Unable to import policy: %s", err)
 
-			By("Pinging %s from %s (should work)", helpers.Httpd1, dockerContainer)
-			successPing := vm.ContainerExec(dockerContainer, helpers.Ping(httpd1Address))
-			successPing.ExpectSuccess("not able to ping %s", httpd1Address)
+			By("Pinging %s from %s (should work)", helpers.Httpd1, worldDockerContainer)
+			successPing := vm.ContainerExec(worldDockerContainer, helpers.Ping(httpd1Address))
+			successPing.ExpectSuccess("Not able to ping %s from %s", helpers.Httpd1, worldDockerContainer)
 
-			By("Accessing /public on %s from Docker container with world networking (should work)", helpers.Httpd1)
-			successCurl := vm.ContainerExec(dockerContainer, helpers.CurlFail("http://%s/public", httpd1Address))
-			successCurl.ExpectSuccess("Expected to be able to access /public %s", helpers.Httpd1)
+			By("Accessing /public on %s from %s (should work)", helpers.Httpd1, worldDockerContainer)
+			successCurl := vm.ContainerExec(worldDockerContainer, helpers.CurlFail("http://%s/public", httpd1Address))
+			successCurl.ExpectSuccess("Expected to be able to access /public on %s from %s", helpers.Httpd1, worldDockerContainer)
 
-			By("Pinging %s from %s (shouldn't work)", helpers.Httpd2, dockerContainer)
-			failPing := vm.ContainerExec(dockerContainer, helpers.Ping(helpers.Httpd2))
-			failPing.ExpectFail("not able to ping %s", helpers.Httpd2)
+			By("Pinging %s from %s (shouldn't work)", helpers.Httpd2, worldDockerContainer)
+			failPing := vm.ContainerExec(worldDockerContainer, helpers.Ping(httpd2Address))
+			failPing.ExpectFail("Not able to ping %s from %s", helpers.Httpd2, worldDockerContainer)
 
-			httpd2, err := vm.ContainerInspectNet(helpers.Httpd2)
-			Expect(err).Should(BeNil(), "Unable to get networking information for container %q", helpers.Httpd2)
-
-			// TODO: test
-			By("Accessing /public in %q from %q (shouldn't work)", helpers.Httpd2, dockerContainer)
-			failCurl := vm.ContainerExec(dockerContainer, helpers.CurlFail("http://%s/public", httpd2[helpers.IPv4]))
-			failCurl.ExpectFail("unexpectedly able to access %s when access should only be allowed to %s", helpers.Httpd2, helpers.Httpd1)
+			By("Accessing /public on %s from %s (shouldn't work)", helpers.Httpd2, worldDockerContainer)
+			failCurl := vm.ContainerExec(worldDockerContainer, helpers.CurlFail("http://%s/public", httpd2Address))
+			failCurl.ExpectFail("Unexpectedly able to access %s from %s when access should only be allowed to %s", helpers.Httpd2, worldDockerContainer, helpers.Httpd1)
 		})
 
 		It("Tests Ingress From World with CIDR+L4 policy", func() {
-			By("Importing policy which allows egress to %q from %q", helpers.Httpd1, dockerContainer)
+			By("Importing policy which allows ingress to %s from %s", helpers.Httpd1, worldDockerContainer)
 			policy := fmt.Sprintf(`
 			[{
 				"endpointSelector": {"matchLabels":{"id.%s":""}},
@@ -1338,30 +1338,25 @@ var _ = Describe("RuntimePolicies", func() {
 			_, err := vm.PolicyRenderAndImport(policy)
 			ExpectWithOffset(1, err).To(BeNil(), "Unable to import policy")
 
-			By("Pinging %q from %q (should not work)", helpers.Httpd1, dockerContainer)
-			res := vm.ContainerExec(dockerContainer, helpers.Ping(httpd1Address))
+			By("Pinging %s from %s (should not work)", helpers.Httpd1, worldDockerContainer)
+			res := vm.ContainerExec(worldDockerContainer, helpers.Ping(httpd1Address))
 			ExpectWithOffset(1, res).ShouldNot(helpers.CMDSuccess(),
-				"expected ping to %q to fail", httpd1Address)
+				"Expected pinging %s from %s to fail", helpers.Httpd1, worldDockerContainer)
 
-			By("Accessing index.html at %q from %q (should work)", helpers.Httpd1, dockerContainer)
-			res = vm.ContainerExec(dockerContainer, helpers.CurlFail("http://%s/index.html", httpd1Address))
+			By("Accessing index.html at %s from %s (should work)", helpers.Httpd1, worldDockerContainer)
+			res = vm.ContainerExec(worldDockerContainer, helpers.CurlFail("http://%s/index.html", httpd1Address))
 			ExpectWithOffset(1, res).To(helpers.CMDSuccess(),
-				"Expected to be able to access /public in %q", helpers.Httpd1)
+				"Expected to be able to access /public on %s from %s", helpers.Httpd1, worldDockerContainer)
 
-			By("Accessing %q on wrong port from %q (should fail)", helpers.Httpd1, dockerContainer)
-			res = vm.ContainerExec(dockerContainer, helpers.CurlFail("http://%s:8080/public", httpd1Address))
+			By("Accessing %s on wrong port from %s (should fail)", helpers.Httpd1, worldDockerContainer)
+			res = vm.ContainerExec(worldDockerContainer, helpers.CurlFail("http://%s:8080/public", httpd1Address))
 			ExpectWithOffset(1, res).ShouldNot(helpers.CMDSuccess(),
-				"unexpectedly able to access %q when access should only be allowed to CIDR", httpd1Address)
+				"Unexpectedly able to access %s from %s on port 8080 when access should only be allowed to port 80", helpers.Httpd1, worldDockerContainer)
 
-			httpd2DockerNetworking, err := vm.ContainerInspectNet(helpers.Httpd2)
-			Expect(err).Should(BeNil(), fmt.Sprintf(
-				"could not get container %s Docker networking", helpers.Httpd2))
-
-			httpd2Address := httpd2DockerNetworking[helpers.IPv4]
-			By("Accessing port 80 on wrong destination from %q (should fail)", dockerContainer)
-			res = vm.ContainerExec(dockerContainer, helpers.CurlFail("http://%s/public", httpd2Address))
+			By("Accessing %s on port 80 from %s (should fail)", helpers.Httpd2, worldDockerContainer)
+			res = vm.ContainerExec(worldDockerContainer, helpers.CurlFail("http://%s/public", httpd2Address))
 			ExpectWithOffset(1, res).ShouldNot(helpers.CMDSuccess(),
-				"unexpectedly able to access %q when access should only be allowed to CIDR", httpd2Address)
+				"Unexpectedly able to access %s on port 80 from %s when access should only be allowed to %s on port 80", helpers.Httpd2, worldDockerContainer, helpers.Httpd1)
 		})
 	})
 
