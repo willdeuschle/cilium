@@ -188,6 +188,12 @@ policy_can_access_ingress(struct __ctx_buff *ctx, __u32 src_identity,
 	if (ret >= CTX_ACT_OK)
 		return ret;
 
+    // the indicator message
+	cilium_dbg(ctx, DBG_MY_MSG, 11, 0);
+	// the identity message
+	cilium_dbg(ctx, DBG_MY_MSG, src_identity, 0);
+	// the close indicator message
+	cilium_dbg(ctx, DBG_MY_MSG, 12, 0);
 	cilium_dbg(ctx, DBG_POLICY_DENIED, src_identity, SECLABEL);
 
 #ifdef POLICY_AUDIT_MODE
@@ -223,6 +229,7 @@ policy_can_egress(struct __ctx_buff *ctx, __u32 identity, __u16 dport, __u8 prot
 	if (ret >= 0)
 		return ret;
 
+	cilium_dbg(ctx, DBG_MY_MSG, 3, 0);
 	cilium_dbg(ctx, DBG_POLICY_DENIED, SECLABEL, identity);
 
 #ifdef POLICY_AUDIT_MODE

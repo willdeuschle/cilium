@@ -34,6 +34,7 @@
 #include "lib/nat.h"
 #include "lib/lb.h"
 #include "lib/nodeport.h"
+#include "lib/eps.h"
 
 #if defined FROM_HOST && (defined ENABLE_IPV4 || defined ENABLE_IPV6)
 static __always_inline int rewrite_dmac_to_host(struct __ctx_buff *ctx,
@@ -310,7 +311,12 @@ static __always_inline int handle_ipv4(struct __ctx_buff *ctx,
 
 	/* Packets from the proxy will already have a real identity. */
 	if (identity_is_reserved(src_identity)) {
-		info = ipcache_lookup4(&IPCACHE_MAP, ip4->saddr, V4_CACHE_KEY_LEN);
+	    // if I'm right, this would be a good place to make the fix
+	    // this does in fact get logged
+        cilium_dbg(ctx, DBG_MY_MSG, 82, 0);
+        // let's see if this fixes it
+        info = lookup_ip4_remote_endpoint(ip4->saddr);
+		// info = ipcache_lookup4(&IPCACHE_MAP, ip4->saddr, 24);
 		if (info != NULL) {
 			__u32 sec_label = info->sec_label;
 			if (sec_label) {
@@ -437,6 +443,8 @@ int tail_handle_ipv4(struct __ctx_buff *ctx)
 
 	ctx_store_meta(ctx, CB_SRC_IDENTITY, 0);
 
+    // I think this is where the tail call goes to
+    cilium_dbg(ctx, DBG_MY_MSG, 81, 0);
 	ret = handle_ipv4(ctx, proxy_identity);
 	if (IS_ERR(ret))
 		return send_drop_notify_error(ctx, proxy_identity, ret, CTX_ACT_DROP, METRIC_INGRESS);
@@ -634,6 +642,7 @@ static __always_inline int do_netdev(struct __ctx_buff *ctx, __u16 proto)
 		int trace = TRACE_FROM_HOST;
 		bool from_proxy;
 
+        cilium_dbg(ctx, DBG_MY_MSG, 75, 0);
 		from_proxy = inherit_identity_from_host(ctx, &identity);
 		if (from_proxy)
 			trace = TRACE_FROM_PROXY;
@@ -693,6 +702,7 @@ int from_netdev(struct __ctx_buff *ctx)
 	cilium_dbg_capture(ctx, DBG_CAPTURE_SNAT_POST, ctx_get_ifindex(ctx));
 #endif /* ENABLE_MASQUERADE */
 
+    cilium_dbg(ctx, DBG_MY_MSG, 74, 0);
 	return do_netdev(ctx, proto);
 }
 

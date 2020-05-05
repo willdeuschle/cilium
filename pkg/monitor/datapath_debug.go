@@ -87,6 +87,7 @@ const (
 	DbgRevProxyFound
 	DbgRevProxyUpdate
 	DbgL4Policy
+	DbgMyMsg
 	DbgNetdevInCluster
 	DbgNetdevEncap4
 	DbgCTLookup41
@@ -329,6 +330,8 @@ func (n *DebugMsg) subTypeString() string {
 	case DbgL4Policy:
 		return fmt.Sprintf("Resolved L4 policy to: %d / %s",
 			byteorder.NetworkToHost(uint16(n.Arg1)), ctDirection[int(n.Arg2)])
+	case DbgMyMsg:
+		return fmt.Sprintf("Found my message %d", n.Arg1)
 	case DbgNetdevInCluster:
 		return fmt.Sprintf("Destination is inside cluster prefix, source identity: %d", n.Arg1)
 	case DbgNetdevEncap4:

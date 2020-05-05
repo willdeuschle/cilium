@@ -54,11 +54,14 @@ static __always_inline bool inherit_identity_from_host(struct __ctx_buff *ctx,
 	} else if (magic == MARK_MAGIC_HOST) {
 		*identity = HOST_ID;
 	} else {
+        cilium_dbg(ctx, DBG_MY_MSG, 80, 0);
 		*identity = WORLD_ID;
 	}
 
 	/* Reset packet mark to avoid hitting routing rules again */
 	ctx->mark = 0;
+    // confirm that we're just inheriting identity here
+    cilium_dbg(ctx, DBG_MY_MSG, 77, 0);
 	cilium_dbg(ctx, DBG_INHERIT_IDENTITY, *identity, 0);
 
 	return from_proxy;

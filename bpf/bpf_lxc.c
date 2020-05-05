@@ -501,6 +501,8 @@ skip_service_lookup:
 	if (1) {
 		struct remote_endpoint_info *info;
 
+        // TODO: get this logging
+		cilium_dbg(ctx, DBG_MY_MSG, 1, 0);
 		info = lookup_ip4_remote_endpoint(orig_dip);
 		if (info != NULL && info->sec_label) {
 			*dstID = info->sec_label;
@@ -1060,6 +1062,8 @@ ipv4_policy(struct __ctx_buff *ctx, int ifindex, __u32 src_label, __u8 *reason,
 			return ret2;
 	}
 
+    // the outside indicator message
+	cilium_dbg(ctx, DBG_MY_MSG, 10, 0);
 	verdict = policy_can_access_ingress(ctx, src_label, tuple.dport,
 					    tuple.nexthdr,
 					    is_fragment, &policy_match_type);
@@ -1128,6 +1132,8 @@ int tail_ipv4_policy(struct __ctx_buff *ctx)
 
 	ctx_store_meta(ctx, CB_SRC_LABEL, 0);
 
+    // to determine what codepath brings us to ipv4 policy
+	cilium_dbg(ctx, DBG_MY_MSG, 7, 0);
 	ret = ipv4_policy(ctx, ifindex, src_label, &reason, &proxy_port);
 	if (ret == POLICY_ACT_PROXY_REDIRECT)
 		ret = ctx_redirect_to_proxy(ctx, proxy_port);
@@ -1185,6 +1191,8 @@ int tail_ipv4_to_endpoint(struct __ctx_buff *ctx)
 #endif
 	ctx_store_meta(ctx, CB_SRC_LABEL, 0);
 
+    // to determine what codepath brings us to ipv4 policy
+	cilium_dbg(ctx, DBG_MY_MSG, 8, 0);
 	ret = ipv4_policy(ctx, 0, src_identity, &reason, &proxy_port);
 	if (ret == POLICY_ACT_PROXY_REDIRECT)
 		ret = ctx_redirect_to_proxy_hairpin(ctx, proxy_port);
@@ -1305,6 +1313,7 @@ int handle_to_container(struct __ctx_buff *ctx)
 
 	bpf_clear_cb(ctx);
 
+    cilium_dbg(ctx, DBG_MY_MSG, 76, 0);
 	if (inherit_identity_from_host(ctx, &identity))
 		trace = TRACE_FROM_PROXY;
 
